@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class LRD_Ajax {
     public function __construct() {
         $actions = array(
-            'lrd_load_items', 'lrd_add_item', 'lrd_get_item', 'lrd_add_comment', 'lrd_get_comments'
+            'lrd_load_items', 'lrd_add_item', 'lrd_get_item', 'lrd_add_comment', 'lrd_get_comments', 'lrd_get_stats'
         );
         foreach ( $actions as $action ) {
             add_action( 'wp_ajax_' . $action,        array( $this, str_replace('lrd_', '', $action) ) );
@@ -158,6 +158,12 @@ class LRD_Ajax {
         }
 
         wp_send_json_success( array( 'html' => $html ?: '<p class="lrd-no-comments">Be the first to respond!</p>' ) );
+    }
+
+    public function get_stats() {
+        $stats_obj = new LRD_Stats();
+        $stats = $stats_obj->get_stats();
+        wp_send_json_success( $stats );
     }
 
     private function render_comment( $c, $is_reply = false ) {
