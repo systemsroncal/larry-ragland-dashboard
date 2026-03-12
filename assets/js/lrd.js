@@ -29,6 +29,8 @@
         if ( $overlay ) {
             $overlay.removeClass('active');
             $('body').css('overflow','');
+            // Stop any playing video by clearing modal body
+            $overlay.find('.lrd-modal-body').empty();
         }
     }
 
@@ -273,6 +275,78 @@
             }
         });
     });
+
+    /* ============================================================
+       GROWTH TRACK
+       ============================================================ */
+    var ytPlayer = null;
+    var currentVideoId = null;
+
+    $(document).on('click', '.lrd-gt-item:not(.is-locked)', function(){
+        var $el = $(this);
+        var url = $el.data('video-url');
+        currentVideoId = $el.data('id');
+
+        if ( ! url ) return;
+
+        var html = '<div class="lrd-video-container"><div id="lrd-yt-player"></div></div>';
+        openModal(html);
+
+        // Load YouTube API if not already loaded
+        if ( typeof YT === 'undefined' || typeof YT.Player === 'undefined' ) {
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            window.onYouTubeIframeAPIReady = function() {
+                initYTPlayer( url );
+            };
+        } else {
+            initYTPlayer( url );
+        }
+    });
+
+    function initYTPlayer( url ) {
+        // Extract video ID from embed URL
+        var videoIdMatch = url.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
+        var videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+        if ( ! videoId ) return;
+
+        ytPlayer = new YT.Player('lrd-yt-player', {
+            height: '360',
+            width: '640',
+            videoId: videoId,
+            playerVars: {
+                'autoplay': 1,
+                'rel': 0,
+                'enablejsapi': 1
+            },
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+            markVideoCompleted(currentVideoId);
+        }
+    }
+
+    function markVideoCompleted(id) {
+        $.post(LRD.ajax_url, {
+            action: 'lrd_complete_video',
+            nonce: LRD.nonce,
+            video_id: id
+        }, function(res){
+            if ( res.success ) {
+                // Optionally show a message or reload the grid
+                location.reload(); // Simplest way to reflect progress for now
+            }
+        });
+    }
 
     /* ============================================================
        COUNTDOWN TIMER
