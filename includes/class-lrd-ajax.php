@@ -6,6 +6,7 @@ class LRD_Ajax {
         $actions = array(
             'lrd_load_items', 'lrd_add_item', 'lrd_get_item', 'lrd_add_comment', 'lrd_get_comments',
             'lrd_complete_video', 'lrd_reset_growth_track'
+            'lrd_load_items', 'lrd_add_item', 'lrd_get_item', 'lrd_add_comment', 'lrd_get_comments', 'lrd_get_stats'
         );
         foreach ( $actions as $action ) {
             add_action( 'wp_ajax_' . $action,        array( $this, str_replace('lrd_', '', $action) ) );
@@ -189,6 +190,11 @@ class LRD_Ajax {
         delete_user_meta( $target_user_id, 'lrd_watched_videos' );
 
         wp_send_json_success();
+
+    public function get_stats() {
+        $stats_obj = new LRD_Stats();
+        $stats = $stats_obj->get_stats();
+        wp_send_json_success( $stats );
     }
 
     private function render_comment( $c, $is_reply = false ) {

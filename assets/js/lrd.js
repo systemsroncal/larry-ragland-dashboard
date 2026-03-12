@@ -387,6 +387,38 @@
        ============================================================ */
     $(function(){
         initCountdowns();
+        initStatsAutoUpdate();
     });
+
+    /* ============================================================
+       STATS AUTO-UPDATE
+       ============================================================ */
+    function initStatsAutoUpdate() {
+        if ( ! $('.lrd-stats-bar').length ) return;
+
+        setInterval(function(){
+            $.post(LRD.ajax_url, {
+                action: 'lrd_get_stats',
+                nonce:  LRD.nonce
+            }, function(res){
+                if ( res.success ) {
+                    updateStatNum('#lrd-stat-members', res.data.members);
+                    updateStatNum('#lrd-stat-online',  res.data.online);
+                    updateStatNum('#lrd-stat-prayer',  res.data.prayer);
+                    updateStatNum('#lrd-stat-events',  res.data.events);
+                }
+            });
+        }, 300000); // 5 minutes
+    }
+
+    function updateStatNum(selector, newVal) {
+        var $el = $(selector);
+        var currentVal = parseInt($el.text().replace(/,/g, '')) || 0;
+        if ( currentVal !== newVal ) {
+            $el.fadeOut(200, function(){
+                $el.text(newVal.toLocaleString()).fadeIn(200);
+            });
+        }
+    }
 
 })(jQuery);

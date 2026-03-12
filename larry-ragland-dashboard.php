@@ -18,6 +18,7 @@ require_once LRD_PATH . 'includes/class-lrd-prayer.php';
 require_once LRD_PATH . 'includes/class-lrd-godit.php';
 require_once LRD_PATH . 'includes/class-lrd-events.php';
 require_once LRD_PATH . 'includes/class-lrd-growth-track.php';
+require_once LRD_PATH . 'includes/class-lrd-stats.php';
 require_once LRD_PATH . 'includes/class-lrd-notifications.php';
 require_once LRD_PATH . 'includes/class-lrd-ajax.php';
 
