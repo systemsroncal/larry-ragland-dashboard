@@ -5,6 +5,29 @@ class LRD_Events {
     public function __construct() {
         add_shortcode( 'lrd_events',      array( $this, 'render' ) );
         add_shortcode( 'lrd_events_list', array( $this, 'render_list' ) );
+        add_shortcode( 'lrd_upcoming_events', array( $this, 'render_upcoming' ) );
+    }
+
+    public function render_upcoming( $atts ) {
+        $atts = shortcode_atts( array(
+            'count' => 3,
+        ), $atts );
+
+        $events = $this->get_events( intval($atts['count']) );
+
+        if ( empty($events) ) {
+            return '<p class="lrd-empty">No upcoming events found.</p>';
+        }
+
+        ob_start();
+        ?>
+        <div class="lrd-upcoming-events-list">
+            <?php foreach ( $events as $event ) : ?>
+                <?php echo $this->render_event_row( $event ); ?>
+            <?php endforeach; ?>
+        </div>
+        <?php
+        return ob_get_clean();
     }
 
     public function render_list( $atts ) {
