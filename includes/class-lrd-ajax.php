@@ -4,6 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class LRD_Ajax {
     public function __construct() {
         $actions = array(
+            'lrd_load_items', 'lrd_add_item', 'lrd_get_item', 'lrd_add_comment', 'lrd_get_comments',
+            'lrd_complete_video', 'lrd_reset_growth_track'
             'lrd_load_items', 'lrd_add_item', 'lrd_get_item', 'lrd_add_comment', 'lrd_get_comments', 'lrd_get_stats'
         );
         foreach ( $actions as $action ) {
@@ -159,6 +161,35 @@ class LRD_Ajax {
 
         wp_send_json_success( array( 'html' => $html ?: '<p class="lrd-no-comments">Be the first to respond!</p>' ) );
     }
+
+    /* ---------- GROWTH TRACK ---------- */
+    public function complete_video() {
+        $this->verify();
+        if ( ! is_user_logged_in() ) wp_send_json_error('Login required.');
+
+        $video_id = isset($_POST['video_id']) ? intval($_POST['video_id']) : 0;
+        if ( ! $video_id ) wp_send_json_error('Missing video ID.');
+
+        $user_id = get_current_user_id();
+        $watched = get_user_meta( $user_id, 'lrd_watched_videos', true );
+        if ( ! is_array($watched) ) $watched = array();
+
+        if ( ! in_array($video_id, $watched) ) {
+            $watched[] = $video_id;
+            update_user_meta( $user_id, 'lrd_watched_videos', $watched );
+        }
+
+        wp_send_json_success();
+    }
+
+    public function reset_growth_track() {
+        $this->verify();
+        if ( ! current_user_can('manage_options') ) wp_send_json_error('Unauthorized.');
+
+        $target_user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : get_current_user_id();
+        delete_user_meta( $target_user_id, 'lrd_watched_videos' );
+
+        wp_send_json_success();
 
     public function get_stats() {
         $stats_obj = new LRD_Stats();
