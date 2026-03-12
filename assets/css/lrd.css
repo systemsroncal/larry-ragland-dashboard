@@ -1,0 +1,604 @@
+/* ============================================================
+   Larry Ragland Dashboard — lrd.css
+   ============================================================ */
+
+/* ---- Widget base ---- */
+.lrd-widget {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 22px 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 580px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+
+.lrd-widget-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.lrd-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.lrd-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 !important;
+    color: #111;
+}
+
+/* ---- Info icon ---- */
+.lrd-info-icon {
+    position: relative;
+    cursor: pointer;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+}
+
+.lrd-info-popup {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 240px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.12);
+    font-size: 13px;
+    color: #333;
+    z-index: 9999;
+    line-height: 1.5;
+}
+
+.lrd-info-popup strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #111;
+}
+
+.lrd-info-popup p {
+    margin: 0 0 4px !important;
+}
+
+.lrd-info-icon:hover .lrd-info-popup,
+.lrd-info-icon:focus .lrd-info-popup {
+    display: block;
+}
+
+/* ---- ADD button ---- */
+.lrd-add-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+    letter-spacing: .3px;
+    transition: opacity .15s;
+}
+
+.lrd-add-btn:hover { opacity: .85; }
+.lrd-add-btn.lrd-green  { background: #3dae4b; }
+.lrd-add-btn.lrd-purple { background: #7b2fbe; }
+
+/* ---- List items ---- */
+.lrd-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+    transition: background .12s;
+    border-radius: 6px;
+    padding-left: 4px;
+}
+
+.lrd-item:last-child { border-bottom: none; }
+.lrd-item:hover { background: #f8f8f8; }
+
+.lrd-item-avatar img,
+.lrd-item-avatar .lrd-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.lrd-avatar-placeholder {
+    background: #e0e0e0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.lrd-avatar-placeholder.sm {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 13px;
+}
+
+.lrd-item-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 2px;
+}
+
+.lrd-item-preview {
+    font-size: 13px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 380px;
+}
+
+.lrd-empty {
+    color: #999;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+/* ---- Explore More ---- */
+.lrd-pagination {
+    margin-top: 10px;
+}
+
+.lrd-explore-more {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.lrd-explore-more:hover { color: #111; }
+
+/* ============================================================
+   EVENTS WIDGET
+   ============================================================ */
+.lrd-events-widget {
+    max-width: 440px;
+}
+
+/* Next event banner */
+.lrd-next-event {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a2e5c;
+    position: relative;
+    min-height: 160px;
+    margin-bottom: 18px;
+}
+
+.lrd-next-event-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: .25;
+}
+
+.lrd-next-event-overlay {
+    position: relative;
+    padding: 20px 22px;
+    color: #fff;
+}
+
+.lrd-next-event-date {
+    font-size: 12px;
+    opacity: .8;
+    margin-bottom: 4px;
+}
+
+.lrd-next-event-title {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.lrd-next-event-loc {
+    font-size: 12px;
+    opacity: .75;
+    margin-bottom: 16px;
+}
+
+ .lrd-event-time {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    min-width: 120px;
+                }
+                
+                .lrd-event-time-val {
+                    font-weight: 600;
+                    color: #333;
+                    font-size: 15px;
+                }
+                
+                .lrd-event-date {
+                    font-size: 13px;
+                    color: #666;
+                    margin: 2px 0;
+                }
+                
+                .lrd-event-day {
+                    font-size: 12px;
+                    color: #888;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .lrd-event-name a {
+                    text-decoration: none;
+                    color: inherit;
+                }
+                
+                .lrd-event-name a:hover {
+                    text-decoration: underline;
+                    color: #0073aa;
+                }
+                
+                .lrd-event-icon a {
+                    display: block;
+                    text-decoration: none;
+                }
+
+/* Countdown */
+.lrd-countdown {
+    display: flex;
+    gap: 20px;
+}
+
+.lrd-countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lrd-countdown-unit span {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.lrd-countdown-unit small {
+    font-size: 11px;
+    opacity: .75;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-top: 2px;
+}
+
+/* Events board */
+.lrd-events-board-header {
+    margin-bottom: 12px;
+}
+
+.lrd-board-desc {
+    font-size: 13px;
+    color: #555;
+    margin: 4px 0 0 !important;
+    line-height: 1.5;
+}
+
+.lrd-events-list { }
+
+.lrd-event-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.lrd-event-row:last-child { border-bottom: none; }
+
+.lrd-event-icon {
+    flex-shrink: 0;
+}
+
+.lrd-event-icon img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.lrd-event-icon-placeholder {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+    color: #666;
+}
+
+.lrd-event-info {
+    flex: 1;
+}
+
+.lrd-event-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.2;
+}
+
+.lrd-event-loc {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+    line-height: 1.2;
+}
+
+.lrd-event-time {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.lrd-event-time-val {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+}
+
+.lrd-event-day {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+}
+
+/* ============================================================
+   MODAL / POPUP
+   ============================================================ */
+.lrd-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 99998;
+    align-items: center;
+    justify-content: center;
+}
+
+.lrd-overlay.active {
+    display: flex;
+}
+
+.lrd-modal {
+    background: #fff;
+    border-radius: 14px;
+    width: 92%;
+    max-width: 520px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 28px 28px 20px;
+    position: relative;
+    box-shadow: 0 8px 40px rgba(0,0,0,.18);
+    animation: lrdFadeIn .18s ease;
+}
+
+@keyframes lrdFadeIn {
+    from { opacity:0; transform:translateY(12px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+
+.lrd-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.lrd-modal-close:hover { color: #111; }
+
+.lrd-modal h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 16px !important;
+}
+
+/* ---- Item detail in modal ---- */
+.lrd-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.lrd-detail-header img,
+.lrd-detail-header .lrd-avatar-placeholder {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+}
+
+.lrd-detail-name {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.lrd-detail-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.lrd-detail-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.lrd-detail-message {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* ---- Comments section ---- */
+.lrd-comments-section h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin: 0 0 12px !important;
+}
+
+.lrd-comment {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.lrd-comment.lrd-reply {
+    margin-left: 38px;
+}
+
+.lrd-comment-avatar img,
+.lrd-comment-avatar .lrd-avatar-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.lrd-comment-meta {
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.lrd-comment-meta span {
+    color: #aaa;
+    font-size: 11px;
+    margin-left: 6px;
+}
+
+.lrd-comment-text {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.5;
+}
+
+.lrd-reply-link {
+    font-size: 11px;
+    color: #888;
+    text-decoration: none;
+    margin-top: 3px;
+    display: inline-block;
+}
+
+.lrd-reply-link:hover { color: #333; }
+
+.lrd-no-comments {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 14px !important;
+}
+
+/* ---- Comment / add form ---- */
+.lrd-comment-form,
+.lrd-add-form {
+    margin-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 16px;
+}
+
+.lrd-form-row {
+    margin-bottom: 12px;
+}
+
+.lrd-form-row label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.lrd-form-row input,
+.lrd-form-row textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color .15s;
+}
+
+.lrd-form-row input:focus,
+.lrd-form-row textarea:focus {
+    border-color: #7b2fbe;
+}
+
+.lrd-form-row textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.lrd-submit-btn {
+    border: none;
+    border-radius: 7px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+    background: #3dae4b;
+    transition: opacity .15s;
+}
+
+.lrd-submit-btn.lrd-purple-btn { background: #7b2fbe; }
+.lrd-submit-btn:hover { opacity: .85; }
+
+.lrd-form-msg {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #c0392b;
+}
+
+.lrd-form-msg.success { color: #27ae60; }
+
+.lrd-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-top-color: #555;
+    border-radius: 50%;
+    animation: lrdSpin .6s linear infinite;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+@keyframes lrdSpin { to { transform: rotate(360deg); } }
