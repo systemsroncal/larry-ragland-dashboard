@@ -18,8 +18,12 @@
         $overlay.on('click', '.lrd-modal-close', closeModal);
     }
 
-    function openModal( html ) {
+    function openModal( html, isVideo ) {
         buildOverlay();
+        var $modal = $overlay.find('.lrd-modal');
+        $modal.removeClass('lrd-modal-video');
+        if ( isVideo ) $modal.addClass('lrd-modal-video');
+
         $overlay.find('.lrd-modal-body').html(html);
         $overlay.addClass('active');
         $('body').css('overflow','hidden');
@@ -292,7 +296,7 @@
         if ( ! url ) return;
 
         var html = '<div class="lrd-video-container"><div id="lrd-yt-player"></div></div>';
-        openModal(html);
+        openModal(html, true);
 
         // Load YouTube API if not already loaded
         if ( typeof YT === 'undefined' || typeof YT.Player === 'undefined' ) {
@@ -323,8 +327,12 @@
                 'autoplay': 1,
                 'rel': 0,
                 'controls': 0,
+                'showinfo': 0,
                 'modestbranding': 1,
                 'disablekb': 1,
+                'fs': 0,
+                'iv_load_policy': 3,
+                'autohide': 1,
                 'enablejsapi': 1,
                 'start': Math.floor(startSeconds)
             },

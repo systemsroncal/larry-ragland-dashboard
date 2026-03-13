@@ -758,6 +758,11 @@
     height: 0;
 }
 
+.lrd-modal.lrd-modal-video {
+    max-width: 900px;
+    padding: 20px;
+}
+
 .lrd-video-container iframe {
     position: absolute;
     top: 0;
