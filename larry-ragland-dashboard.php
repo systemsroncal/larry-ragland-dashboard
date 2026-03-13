@@ -37,3 +37,17 @@ function lrd_enqueue_assets() {
         'login_url'  => wp_login_url( get_permalink() ),
     ));
 }
+
+add_action( 'admin_bar_menu', 'lrd_add_admin_bar_reset_button', 100 );
+function lrd_add_admin_bar_reset_button( $wp_admin_bar ) {
+    if ( ! current_user_can( 'manage_options' ) ) return;
+
+    $wp_admin_bar->add_node( array(
+        'id'    => 'lrd-reset-growth-track',
+        'title' => 'Reset Growth Track',
+        'href'  => '#',
+        'meta'  => array(
+            'onclick' => 'if(confirm("Are you sure you want to reset your Growth Track progress?")){ jQuery.post(LRD.ajax_url, {action: "lrd_reset_growth_track", nonce: LRD.nonce}, function(){ location.reload(); }); } return false;'
+        )
+    ));
+}
