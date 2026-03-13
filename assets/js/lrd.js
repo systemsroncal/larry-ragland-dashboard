@@ -281,11 +281,13 @@
        ============================================================ */
     var ytPlayer = null;
     var currentVideoId = null;
+    var progressInterval = null;
 
     $(document).on('click', '.lrd-gt-item:not(.is-locked)', function(){
         var $el = $(this);
         var url = $el.data('video-url');
         currentVideoId = $el.data('id');
+        var startSeconds = parseFloat($el.data('progress')) || 0;
 
         if ( ! url ) return;
 
@@ -300,15 +302,14 @@
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
             window.onYouTubeIframeAPIReady = function() {
-                initYTPlayer( url );
+                initYTPlayer( url, startSeconds );
             };
         } else {
-            initYTPlayer( url );
+            initYTPlayer( url, startSeconds );
         }
     });
 
-    function initYTPlayer( url ) {
-        // Extract video ID from embed URL
+    function initYTPlayer( url, startSeconds ) {
         var videoIdMatch = url.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
         var videoId = videoIdMatch ? videoIdMatch[1] : null;
 
@@ -321,18 +322,57 @@
             playerVars: {
                 'autoplay': 1,
                 'rel': 0,
-                'enablejsapi': 1
+                'controls': 0,
+                'modestbranding': 1,
+                'disablekb': 1,
+                'enablejsapi': 1,
+                'start': Math.floor(startSeconds)
             },
             events: {
+                'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
             }
         });
     }
 
+    function onPlayerReady(event) {
+        startProgressTracking();
+    }
+
     function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.ENDED) {
+            stopProgressTracking();
             markVideoCompleted(currentVideoId);
+        } else if (event.data == YT.PlayerState.PLAYING) {
+            startProgressTracking();
+        } else {
+            stopProgressTracking();
         }
+    }
+
+    function startProgressTracking() {
+        if ( progressInterval ) return;
+        progressInterval = setInterval(function(){
+            if ( ytPlayer && ytPlayer.getCurrentTime ) {
+                saveVideoProgress(currentVideoId, ytPlayer.getCurrentTime());
+            }
+        }, 5000);
+    }
+
+    function stopProgressTracking() {
+        if ( progressInterval ) {
+            clearInterval(progressInterval);
+            progressInterval = null;
+        }
+    }
+
+    function saveVideoProgress(id, timestamp) {
+        $.post(LRD.ajax_url, {
+            action: 'lrd_save_video_progress',
+            nonce: LRD.nonce,
+            video_id: id,
+            timestamp: timestamp
+        });
     }
 
     function markVideoCompleted(id) {
@@ -342,11 +382,20 @@
             video_id: id
         }, function(res){
             if ( res.success ) {
-                // Optionally show a message or reload the grid
-                location.reload(); // Simplest way to reflect progress for now
+                location.reload();
             }
         });
     }
+
+    // Capture modal close to save final progress
+    var originalCloseModal = closeModal;
+    closeModal = function() {
+        if ( ytPlayer && ytPlayer.getCurrentTime && currentVideoId ) {
+            saveVideoProgress(currentVideoId, ytPlayer.getCurrentTime());
+        }
+        stopProgressTracking();
+        originalCloseModal();
+    };
 
     /* ============================================================
        COUNTDOWN TIMER
